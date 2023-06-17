@@ -13,13 +13,10 @@ def analyze_company(ticker_symbol):
 
     # Get the income statement
     income_statement = company.income_statement()
-    
-    # Get the number of shares
-    shares_outstanding = company.key_stats[ticker_symbol]['sharesOutstanding']
-
+    income_statement = income_statement.dropna(subset=['DilutedEPS'])
     # Analyze the data
-    total_earnings = income_statement['NetIncome'].iloc[0]  # Use the most recent year's net income
-    earnings_per_share = total_earnings / shares_outstanding
+    earnings_per_share = income_statement['DilutedEPS'].iloc[-1]  # Use the most recent year's net income
+
     pe_ratio = current_price / earnings_per_share
     
     return pe_ratio
